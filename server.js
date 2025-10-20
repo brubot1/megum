@@ -3,21 +3,32 @@ import express from 'express'
 const app = express()
 const port = process.env.PORT || 3000
 
-// Rota básica para Render não suspender
+// ✅ Adicione estas rotas:
+app.use(express.json())
+
 app.get('/', (req, res) => {
-  res.send('🤖 Megumin Bot Online!')
+  res.json({ 
+    status: 'online', 
+    bot: 'Megumin-Bot-MD',
+    timestamp: new Date().toISOString()
+  })
 })
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK')
 })
 
-// Importar SEU bot principal
-import('./index.js').catch(error => {
-  console.error('Erro ao iniciar bot:', error)
+// ✅ Iniciar servidor PRIMEIRO
+app.listen(port, '0.0.0.0', () => {
+  console.log(`🚀 Servidor rodando na porta ${port}`)
+  
+  // ✅ DEPOIS iniciar o bot
+  import('./index.js').catch(error => {
+    console.error('❌ Erro ao iniciar bot:', error)
+  })
 })
 
-// Manter ativo - ping a cada 5 minutos
+// ✅ Keep-alive
 setInterval(() => {
   console.log('❤️  Bot ativo:', new Date().toLocaleString('pt-BR'))
 }, 5 * 60 * 1000)
