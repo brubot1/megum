@@ -2,7 +2,7 @@ import express from 'express'
 import fetch from 'node-fetch'  // 👈 ADICIONAR ESTA LINHA
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 // Rotas para manter ativo
 app.get('/', (req, res) => {
